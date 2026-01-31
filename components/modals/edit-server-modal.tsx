@@ -58,14 +58,16 @@ export function EditServerModal() {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("🚀 Form submit başladı", values);
     try {
-      await axios.patch(`/api/servers/${server?.id}`, values);
+      const response = await axios.patch(`/api/servers/${server?.id}`, values);
+      console.log("✅ Server güncellendi:", response.data);
 
       form.reset();
       router.refresh();
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error("❌ Server güncelleme hatası:", error);
     }
   };
 
@@ -127,7 +129,12 @@ export function EditServerModal() {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} variant="primary">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                onClick={() => console.log("🖱️ Save butonuna tıklandı")}
+              >
                 Save
               </Button>
             </DialogFooter>

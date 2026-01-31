@@ -1,8 +1,11 @@
-import { createNextRouteHandler } from "uploadthing/next";
+import { createRouteHandler } from "uploadthing/next";
 
 import { ourFileRouter } from "./core";
 
-// Export routes for Next App Router
-export const { GET, POST } = createNextRouteHandler({
-  router: ourFileRouter
+// Export routes for Next App Router (v7: createNextRouteHandler renamed to createRouteHandler)
+export const { GET, POST } = createRouteHandler({
+  router: ourFileRouter,
+  config: {
+    token: process.env.UPLOADTHING_TOKEN,
+  },
 });

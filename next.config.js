@@ -9,7 +9,11 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ["uploadthing.com"]
+    domains: [
+      "uploadthing.com",
+      "utfs.io",              // UploadThing v7 CDN
+      "img.clerk.com"         // Clerk user avatars
+    ]
   },
   swcMinify: false
 };

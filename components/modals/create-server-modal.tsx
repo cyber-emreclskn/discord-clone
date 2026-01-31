@@ -50,14 +50,16 @@ export function CreateServerModal() {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("🚀 Form submit başladı", values);
     try {
-      await axios.post("/api/servers", values);
+      const response = await axios.post("/api/servers", values);
+      console.log("✅ Server oluşturuldu:", response.data);
 
       form.reset();
       router.refresh();
       onClose();
     } catch (error) {
-      console.error(error);
+      console.error("❌ Server oluşturma hatası:", error);
     }
   };
 
@@ -120,7 +122,12 @@ export function CreateServerModal() {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} variant="primary">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                onClick={() => console.log("🖱️ Create butonuna tıklandı")}
+              >
                 Create
               </Button>
             </DialogFooter>

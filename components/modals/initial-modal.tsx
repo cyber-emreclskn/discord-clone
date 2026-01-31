@@ -48,14 +48,16 @@ export function InitialModal() {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("🚀 Form submit başladı", values);
     try {
-      await axios.post("/api/servers", values);
+      const response = await axios.post("/api/servers", values);
+      console.log("✅ Server oluşturuldu:", response.data);
 
       form.reset();
       router.refresh();
       window.location.reload();
     } catch (error) {
-      console.error(error);
+      console.error("❌ Server oluşturma hatası:", error);
     }
   };
 
@@ -78,7 +80,13 @@ export function InitialModal() {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={(e) => {
+              console.log("📝 Form submit event tetiklendi");
+              form.handleSubmit(onSubmit)(e);
+            }}
+            className="space-y-8"
+          >
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
                 <FormField
@@ -119,7 +127,12 @@ export function InitialModal() {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} variant="primary">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                variant="primary"
+                onClick={() => console.log("🖱️ Create butonuna tıklandı")}
+              >
                 Create
               </Button>
             </DialogFooter>
