@@ -10,15 +10,20 @@ const handleAuth = () => {
 };
 
 export const ourFileRouter = {
-  serverImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
+  serverImage: f({
+    image: { maxFileSize: "4MB", maxFileCount: 1 }
+  })
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {
-      console.log("Server Image Upload Completed.");
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("✅ Server Image Upload Completed:", file.url);
+      // v7: Return data to client (awaitServerData: true by default)
+      return { uploadedBy: metadata.userId, url: file.url };
     }),
   messageFile: f(["image", "pdf"])
     .middleware(() => handleAuth())
-    .onUploadComplete(() => {
-      console.log("Message File Upload Completed.");
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("✅ Message File Upload Completed:", file.url);
+      return { uploadedBy: metadata.userId, url: file.url };
     })
 } satisfies FileRouter;
 

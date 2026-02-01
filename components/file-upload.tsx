@@ -62,9 +62,25 @@ export function FileUpload({
     <UploadDropzone
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
-        onChange(res?.[0].url);
+        console.log("✅ Upload tamamlandı:", res);
+        const fileUrl = res?.[0]?.url;
+        if (fileUrl) {
+          onChange(fileUrl);
+        } else {
+          console.error("❌ File URL bulunamadı:", res);
+        }
       }}
-      onUploadError={(error: Error) => console.error(error.message)}
+      onUploadError={(error: Error) => {
+        console.error("❌ Upload hatası:", error.message);
+        alert(`Upload failed: ${error.message}`);
+      }}
+      onBeforeUploadBegin={(files) => {
+        console.log("📤 Upload başlıyor:", files.map(f => f.name));
+        return files;
+      }}
+      onUploadBegin={(fileName) => {
+        console.log("⏳ Upload devam ediyor:", fileName);
+      }}
     />
   );
 }
