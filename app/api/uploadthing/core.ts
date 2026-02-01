@@ -15,15 +15,18 @@ export const ourFileRouter = {
   })
     .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("✅ Server Image Upload Completed:", file.url);
+      // v7: file.url is deprecated, use file.key
+      const fileUrl = `https://utfs.io/f/${file.key}`;
+      console.log("✅ Server Image Upload Completed:", fileUrl);
       // v7: Return data to client (awaitServerData: true by default)
-      return { uploadedBy: metadata.userId, url: file.url };
+      return { uploadedBy: metadata.userId };
     }),
   messageFile: f(["image", "pdf"])
     .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("✅ Message File Upload Completed:", file.url);
-      return { uploadedBy: metadata.userId, url: file.url };
+      const fileUrl = `https://utfs.io/f/${file.key}`;
+      console.log("✅ Message File Upload Completed:", fileUrl);
+      return { uploadedBy: metadata.userId };
     })
 } satisfies FileRouter;
 

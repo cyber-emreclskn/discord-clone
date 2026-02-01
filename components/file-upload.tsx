@@ -63,11 +63,14 @@ export function FileUpload({
       endpoint={endpoint}
       onClientUploadComplete={(res) => {
         console.log("✅ Upload tamamlandı:", res);
-        const fileUrl = res?.[0]?.url;
-        if (fileUrl) {
+        // v7: url removed, use key to construct URL
+        const key = res?.[0]?.key;
+        if (key) {
+          const fileUrl = `https://utfs.io/f/${key}`;
+          console.log("🔗 Generated URL:", fileUrl);
           onChange(fileUrl);
         } else {
-          console.error("❌ File URL bulunamadı:", res);
+          console.error("❌ File key bulunamadı:", res);
         }
       }}
       onUploadError={(error: Error) => {
