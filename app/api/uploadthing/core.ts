@@ -10,18 +10,21 @@ const handleAuth = () => {
 };
 
 export const ourFileRouter = {
-  serverImage: f({
-    image: { maxFileSize: "4MB", maxFileCount: 1 }
-  })
+  serverImage: f(
+    { image: { maxFileSize: "4MB", maxFileCount: 1 } },
+    { awaitServerData: false } // v7: Don't wait for server callback
+  )
     .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
       // v7: file.url is deprecated, use file.key
       const fileUrl = `https://utfs.io/f/${file.key}`;
       console.log("✅ Server Image Upload Completed:", fileUrl);
-      // v7: Return data to client (awaitServerData: true by default)
       return { uploadedBy: metadata.userId };
     }),
-  messageFile: f(["image", "pdf"])
+  messageFile: f(
+    ["image", "pdf"],
+    { awaitServerData: false } // v7: Don't wait for server callback
+  )
     .middleware(() => handleAuth())
     .onUploadComplete(async ({ metadata, file }) => {
       const fileUrl = `https://utfs.io/f/${file.key}`;
